@@ -36,6 +36,7 @@ Window {
                     points.push(tmp)
                 }
 
+                canvas.clear()
                 canvas.requestPaint()
             }
         }
@@ -49,7 +50,6 @@ Window {
                 canvas.requestPaint()
             }
         }
-
 
         function clear(){
             ctx = getContext("2d");

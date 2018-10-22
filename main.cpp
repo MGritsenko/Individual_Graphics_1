@@ -1,6 +1,11 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include <QObject>
+#include <QQmlContext>
+
+#include "quickhull.h"
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -24,7 +29,12 @@ int main(int argc, char *argv[])
             app.exit(-1);
             else
             QObject::disconnect(connection);
-}, Qt::QueuedConnection);
+},
+            Qt::QueuedConnection);
+
+
+    QuickHull quickHull;
+    engine.rootContext()->setContextProperty("QuickHull", &quickHull);
 
     engine.load(mainQml);
 
