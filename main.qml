@@ -12,6 +12,8 @@ Window {
     //https://www.geeksforgeeks.org/quickhull-algorithm-convex-hull/
 
     property var points: []
+    property var rotPolygon: []
+    property var rotPolygon2: []
     Canvas {
         id: canvas
         anchors.fill: parent
@@ -21,6 +23,7 @@ Window {
 
         onPaint: {
             drawDot(ctx, canvas)
+            drawPolygon(ctx, canvas)
         }
 
         MouseArea {
@@ -46,7 +49,7 @@ Window {
             text: "GO!"
 
             onClicked: {
-                doQuickHull()
+                canvas.doQuickHull()
                 canvas.requestPaint()
             }
         }
@@ -72,7 +75,36 @@ Window {
         }
 
         function doQuickHull(){
+            rotPolygon = QuickHull.printHull(points, false);
+            rotPolygon2 = QuickHull.printHull(points, true);
 
+            canvas.requestPaint()
+        }
+
+        function drawPolygon(ctx, canvas){
+            ctx = canvas.getContext("2d");
+
+            if(rotPolygon.length === 0 || rotPolygon2.length == 0){
+                return
+            }
+
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "limegreen"
+
+            ctx.beginPath()
+            ctx.moveTo(rotPolygon[0][0], rotPolygon[0][1])
+
+            for(var i = 1; i < rotPolygon.length; i++) {
+                ctx.lineTo(rotPolygon[i][0], rotPolygon[i][1])
+            }
+
+            ctx.moveTo(rotPolygon2[0][0], rotPolygon2[0][1])
+
+            for(i = 1; i < rotPolygon2.length; i++) {
+                ctx.lineTo(rotPolygon2[i][0], rotPolygon2[i][1])
+            }
+
+            ctx.stroke()
         }
     }
 }
